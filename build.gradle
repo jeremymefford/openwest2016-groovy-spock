@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+test {
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: $descriptor")
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+//    testCompile "junit:junit:4.12"
+//    compile "org.codehaus.groovy:groovy-all:2.4.5", {
+//        exclude module: "jsp-api"
+//        exclude module: "servlet-api"
+//    }
+    testCompile "org.spockframework:spock-spring:1.0-groovy-2.4", {
+//        exclude module: "junit-dep"
+//        exclude module: "groovy-all"
+//        exclude group: "org.springframework"
+    }
+    testCompile 'cglib:cglib:3.2.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}

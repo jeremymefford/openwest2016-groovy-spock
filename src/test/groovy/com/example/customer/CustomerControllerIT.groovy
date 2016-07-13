@@ -1,6 +1,8 @@
 package com.example.customer
 
 import com.example.IntegrationBootstrap
+import org.springframework.http.HttpMethod
+import org.springframework.http.RequestEntity
 
 /**
  * @author Jeremy Mefford
@@ -13,13 +15,20 @@ class CustomerControllerIT extends IntegrationBootstrap {
         def customer = restTemplate.getForObject("$baseUrl/customer/1", Customer)
 
         then: "asset that the customer data is what was expected"
-        true
+        with(customer) {
+            firstName == "John"
+            lastName == "Doe"
+        }
     }
 
     def "it should honor the regex passed"() {
         when: "i call it with a non-digit regex"
+        def response = restTemplate.exchange(
+                new RequestEntity<Object>(HttpMethod.GET, URI.create("$baseUrl/customer/-1")),
+                Customer)
 
         then: "it should throw the expected exception"
+        response.statusCode.is4xxClientError()
     }
 
 }

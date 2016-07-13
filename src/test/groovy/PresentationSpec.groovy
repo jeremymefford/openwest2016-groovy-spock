@@ -44,7 +44,7 @@ class PresentationSpec extends Specification {
         def val2 = weirdNumber.longValue()
 
         then:
-        2 * weirdNumber.longValue() >>> [100L, 25L]
+        2 * weirdNumber.longValue() >>> [100L, 25L, { throw new RuntimeException() }]
 
         and:
         val1 == 100L
